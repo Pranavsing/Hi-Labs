@@ -1,0 +1,55 @@
+// ॐ
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+#define pb push_back
+#define mp make_pair
+#define fr first
+#define sc second
+#define all(v) v.begin(), v.end()
+#define bac(v) v.rbegin(), v.rend()
+#define rep(i, a, b) for (ll i = a; i < b; ++i)
+#define endl '\n'
+#define precise(i) cout << fixed << setprecision(i)
+ll f(ll i, ll n, ll k, ll m, ll sum, vector<vector<vector<ll>>> &dp)
+{
+    if (i == n)
+    {
+        if (k == 0 && ((sum % m) == 0))
+        {
+            return 1;
+        }
+        return 0;
+    }
+    if (dp[i][k][sum] != -1)
+    {
+        return dp[i][k][sum];
+    }
+    ll np = f(i + 1, n, k, m, sum, dp);
+    ll pi = 0;
+    if (k > 0)
+    {
+        pi = f(i + 1, n, k - 1, m, (sum + i) % m, dp);
+    }
+    return dp[i][k][sum] = pi + np;
+}
+ll solve(ll n, ll k, ll m)
+{
+    vector<vector<vector<ll>>> dp(n + 1, vector<vector<ll>>(k + 1, vector<ll>(m + 1, -1)));
+    return f(0, n, k, m, 0, dp);
+}
+
+signed main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    ll t;
+    cin >> t;
+    while (t--)
+    {
+        ll n, k, m;
+        cin >> n >> k >> m;
+        cout << solve(n, k, m) << endl;
+    }
+}
